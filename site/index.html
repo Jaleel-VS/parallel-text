@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn Spanish – Parallel Text: Easy Stories</title>
+<link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script>
+  // Apply saved theme before first paint to avoid a flash.
+  try {
+    const s = JSON.parse(localStorage.getItem("pt-settings") || "{}");
+    if (s.theme) document.documentElement.dataset.theme = s.theme;
+    if (s.fontSize) document.documentElement.style.setProperty("--reader-size", s.fontSize + "px");
+  } catch {}
+</script>
+</head>
+<body>
+<!-- Line icons from lucide (ISC license) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-bookmark-check" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/><path d="m9 10 2 2 4-4"/></symbol>
+</svg>
+
+<header class="topbar">
+  <a class="brand" href="#/">Parallel Text <span>· Easy Stories</span></a>
+  <button class="btn square" id="theme-btn" type="button" aria-label="Switch light or dark" title="Switch light or dark">
+    <svg class="icon icon-moon"><use href="#i-moon"/></svg>
+    <svg class="icon icon-sun"><use href="#i-sun"/></svg>
+  </button>
+</header>
+
+<main id="app"></main>
+
+<footer class="site-footer">
+  <p id="copyright"></p>
+</footer>
+
+<template id="home-tpl">
+  <section class="home">
+    <figure class="book">
+      <img src="cover.jpg" alt="Cover of Learn Spanish – Parallel Text: Easy Stories" class="cover" width="280" height="420">
+      <figcaption>Polyglot Planet Publishing, 2015. Eight stories, each with its audiobook track.</figcaption>
+    </figure>
+    <div class="intro">
+      <h1>Learn Spanish with eight easy stories</h1>
+      <p class="lede">Every Spanish sentence sits beside its English translation. Hide either language to test yourself, then tap a sentence to check it.</p>
+      <nav class="contents" aria-label="Stories">
+        <h2>Contents</h2>
+        <ol class="story-list" id="story-list"></ol>
+      </nav>
+    </div>
+  </section>
+</template>
+
+<template id="reader-tpl">
+  <section class="reader">
+    <div class="toolbar" role="toolbar" aria-label="Reading options">
+      <a class="back" href="#/"><svg class="icon"><use href="#i-arrow-left"/></svg><span>Contents</span></a>
+      <div class="group" aria-label="Languages">
+        <button type="button" class="btn lang-toggle" data-lang="es" aria-pressed="true" title="Show or hide Spanish (S)"><span class="box"><svg class="icon"><use href="#i-check"/></svg></span>Español</button>
+        <button type="button" class="btn lang-toggle" data-lang="en" aria-pressed="true" title="Show or hide English (E)"><span class="box"><svg class="icon"><use href="#i-check"/></svg></span>English</button>
+      </div>
+      <div class="segmented" id="layout-group" aria-label="Layout">
+        <button type="button" class="seg" data-layout="side" title="Side by side (L)">Side by side</button>
+        <button type="button" class="seg" data-layout="lines" title="Line by line (L)">Line by line</button>
+      </div>
+      <div class="group" aria-label="Text size">
+        <button type="button" class="btn square" id="font-down" aria-label="Smaller text" title="Smaller text">A−</button>
+        <button type="button" class="btn square" id="font-up" aria-label="Larger text" title="Larger text">A+</button>
+      </div>
+    </div>
+
+    <header class="story-head">
+      <p class="story-no"></p>
+      <h1 lang="es" class="title-es"></h1>
+      <p lang="en" class="title-en"></p>
+    </header>
+
+    <div class="audio">
+      <audio controls preload="none"></audio>
+      <label>Speed
+        <select id="speed">
+          <option value="0.75">0.75×</option>
+          <option value="0.9">0.9×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.25">1.25×</option>
+        </select>
+      </label>
+      <a class="download" target="_blank" rel="noopener">Open audio file</a>
+    </div>
+
+    <p class="hint" hidden></p>
+    <article class="text"></article>
+    <aside class="notes" hidden><h2>Notes</h2><ol></ol></aside>
+
+    <nav class="story-nav" aria-label="Other stories">
+      <a class="prev"></a>
+      <button type="button" class="btn done-btn"></button>
+      <a class="next"></a>
+    </nav>
+  </section>
+</template>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
