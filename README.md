@@ -59,7 +59,7 @@ Live at **https://parallel.jaleel.me**.
 | --- | --- |
 | Site | Vercel project `parallel-text` (scope `jaleelvs-projects`), connected to GitHub `Jaleel-VS/parallel-text`; serves `site/` with no build step |
 | Domain | GoDaddy DNS: `CNAME parallel → 9775b04bf0a43718.vercel-dns-017.com.` |
-| Audio | Private S3 bucket `paralleltext-audio-195950944512` (us-east-1, key prefix `audio/`), served over HTTPS by CloudFront `E24576XBVOKB1P` (`da8wz18u6jpdv.cloudfront.net`) through origin access control |
+| Audio | Private S3 bucket (key prefix `audio/`), served over HTTPS by a CloudFront distribution (`da8wz18u6jpdv.cloudfront.net`) through origin access control |
 
 Every push to `main` deploys to production. Other branches get preview
 deployments. To deploy from your machine without pushing:
@@ -73,10 +73,10 @@ plain HTTP only. Browsers block HTTP audio on an HTTPS page, so the MP3s
 are copied to S3. To replace or add tracks:
 
 ```sh
-jda  # AWS credentials for account 195950944512
-aws s3 cp Track.mp3 s3://paralleltext-audio-195950944512/audio/ \
+# with credentials for the AWS account that owns the bucket
+aws s3 cp Track.mp3 s3://<bucket>/audio/ \
   --content-type audio/mpeg --cache-control "public, max-age=31536000, immutable"
 ```
 
 Files are cached for a year. To change a file that keeps its name, run
-`aws cloudfront create-invalidation --distribution-id E24576XBVOKB1P --paths '/audio/*'`.
+`aws cloudfront create-invalidation --distribution-id <distribution-id> --paths '/audio/*'`.
